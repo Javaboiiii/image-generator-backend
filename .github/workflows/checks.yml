@@ -1,0 +1,46 @@
+name: Vulnerability Checks
+run-name: ${{ github.actor }} is testing out Vulnerabilities 🚀
+on: 
+  push: 
+    branches: 
+      - main
+  pull_request: 
+    branches: 
+      - main
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      
+  Check-Print-Statements:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      
+      - name: Check for print statements
+        run: |
+          echo "Checking for print statements in Python files..."
+          # Find all Python files and check for print statements
+          PRINT_FOUND=$(find . -name "*.py" -type f -exec grep -l "print(" {} \;)
+          
+          # If print statements are found, list the files and fail the workflow
+          if [ -n "$PRINT_FOUND" ]; then
+            echo "❌ Error: print statements found in the following files:"
+            echo "$PRINT_FOUND"
+            echo "Please remove print statements before committing."
+            exit 1
+          else
+            echo "✅ No print statements found."
+          fi
