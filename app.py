@@ -12,13 +12,12 @@ client = genai.Client(api_key="AIzaSyDqqQhZZt4PkstxS_t7noqcwxUZVOV2gKc")
 
 @app.route('/api/generate_image', methods = ['POST'])  
 def generate_image() : 
-  print("Executed the POST request")
   try :    
     data = request.get_json() 
-    print("Received request with data:", data)
+    
 
     contents = (f"{data['content']}") 
-    print("Generating image with prompt:", contents)
+    
     response = client.models.generate_content(
       model="gemini-2.0-flash-preview-image-generation",
         contents=contents,
@@ -46,10 +45,8 @@ def generate_image() :
     )
       # Return the JSON response
     result = response.model_dump_json()
-    print("Successfully generated image")
     return result
   except Exception as e : 
-    print("Error generating image:", e)
     return {"error": str(e)}, 500
 
 
