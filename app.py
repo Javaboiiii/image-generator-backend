@@ -12,6 +12,7 @@ client = genai.Client(api_key="AIzaSyDqqQhZZt4PkstxS_t7noqcwxUZVOV2gKc")
 
 @app.route('/api/generate_image', methods = ['POST'])  
 def generate_image() : 
+  print("Executed the POST request")
   try :    
     data = request.get_json() 
     print("Received request with data:", data)
