@@ -9,6 +9,10 @@ CORS(app)
 # Gemini configuration
 client = genai.Client(api_key="AIzaSyDqqQhZZt4PkstxS_t7noqcwxUZVOV2gKc")
 
+@app.route("/", methods=["GET"])
+def index() : 
+   return "<h1>Image generator api</h1>"
+
 
 @app.route('/api/generate_image', methods = ['POST'])  
 def generate_image() : 
@@ -51,4 +55,4 @@ def generate_image() :
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(port=5000, host="0.0.0.0")
