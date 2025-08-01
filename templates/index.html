@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Chat UI</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            <div class="header">
+                <h1>Socket.io Chat</h1>
+                <div id="connection-status" class="status disconnected">Disconnected</div>
+            </div>
+            <div class="messages-container" id="messages"></div>
+            <div class="input-container">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+        <div class="info-panel">
+            <div class="connection-info">
+                <h2>Connection Info</h2>
+                <p>Your ID: <span id="client-id">Connecting...</span></p>
+                <p class="connection-status status disconnected">Disconnected</p>
+            </div>
+            <div class="chat-info">
+                <h2>Global Chat</h2>
+                <p>All messages will be broadcast to all connected users</p>
+                <p><em>Auto-connects when page loads, disconnects when closed</em></p>
+            </div>
+        </div>
+    </div>
+    <script src="static/app.js"></script>
+</body>
+</html>
