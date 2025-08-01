@@ -1,20 +1,38 @@
-from flask import Flask, request
+import eventlet
+eventlet.monkey_patch()
+from flask import Flask, request, logging, render_template
+from flask_socketio import SocketIO
 from google import genai
 from google.genai import types
 from flask_cors import CORS 
+from socket_server import sio
+import socketio
+import eventlet.wsgi
+import logging
 
-app = Flask(__name__) 
-CORS(app)
+# Configure eventlet to work better with concurrent connections
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+flask_app = Flask(__name__) 
+CORS(flask_app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+app = socketio.WSGIApp(socketio_app=sio, wsgi_app=flask_app)
 
 # Gemini configuration
 client = genai.Client(api_key="AIzaSyDqqQhZZt4PkstxS_t7noqcwxUZVOV2gKc")
 
-@app.route("/", methods=["GET"])
-def index() : 
-   return "<h1>Image generator api</h1>"
+@flask_app.route("/chat", methods=["GET"])
+def chat() : 
+   return render_template('index.html')
+
+@flask_app.route("/", methods=["GET"])
+def home() : 
+   return "<h1> Image Generator API </h1>"
 
 
-@app.route('/api/generate_image', methods = ['POST'])  
+@flask_app.route('/api/generate_image', methods = ['POST'])  
 def generate_image() : 
   try :    
     data = request.get_json() 
@@ -55,4 +73,4 @@ def generate_image() :
 
 
 if __name__ == '__main__':
-    app.run(port=5000, host="0.0.0.0")
+    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), app)
